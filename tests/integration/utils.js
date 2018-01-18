@@ -18,16 +18,6 @@ testUtils.isCouchMaster = function () {
     testUtils.params().SERVER === 'couchdb-master';
 };
 
-testUtils.isSyncGateway = function () {
-  return 'SERVER' in testUtils.params() &&
-    testUtils.params().SERVER === 'sync-gateway';
-};
-
-testUtils.isExpressRouter = function () {
-  return 'SERVER' in testUtils.params() &&
-    testUtils.params().SERVER === 'pouchdb-express-router';
-};
-
 testUtils.params = function () {
   if (typeof process !== 'undefined' && !process.browser) {
     return process.env;
@@ -58,7 +48,8 @@ testUtils.couchHost = function () {
   }
 
   if ('couchHost' in testUtils.params()) {
-    return testUtils.params().couchHost;
+    // Remove trailing slash from url if the user defines one
+    return testUtils.params().couchHost.replace(/\/$/, '');
   }
 
   return 'http://localhost:5984';
